@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { MailService } from './mail/mail.service';
-import { SMTPMailService } from './mail/smtp-mail.serice';
+import { PostmarkMailService } from './mail/postmark-mail.service';
+import { SMTPMailService } from './mail/smtp-mail.service';
 
 @Module({
   imports: [],
@@ -9,7 +10,7 @@ import { SMTPMailService } from './mail/smtp-mail.serice';
   providers: [
     {
       provide: MailService,
-      useClass: SMTPMailService,
+      useClass: PostmarkMailService,
     },
   ],
 })
