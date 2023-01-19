@@ -1,9 +1,11 @@
 import { Notification } from '../entities/notification';
 import { SendNotification } from './send-notification';
 
+const notifications: Notification[] = [];
+
 const notificationRepository = {
   async creat(notification: Notification) {
-    console.log(notification);
+    notifications.push(notification);
   },
 };
 
@@ -11,11 +13,14 @@ describe('SEnd notification', () => {
   it('shoud be able to send a notification', async () => {
     const sendNotification = new SendNotification(notificationRepository);
 
-    const { notification } = await sendNotification.execute({
+    await sendNotification.execute({
       content: 'This is a notification',
       category: 'social',
       recipientId: 'exemple-recipientId',
     });
-    expect(notification).toBeTruthy();
+
+    console.log(notifications);
+
+    expect(notifications).toHaveLength(1);
   });
 });
