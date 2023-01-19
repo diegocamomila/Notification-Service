@@ -1,5 +1,5 @@
 import { Notification } from 'src/application/entities/notification';
-import { NotificationsRepository } from '../../../../application/repositories/notifications-repositores';
+import { NotificationsRepository } from '@application/repositories/notifications-repositores';
 import { PrismaService } from '../prisma.service';
 
 //@Injectable()
