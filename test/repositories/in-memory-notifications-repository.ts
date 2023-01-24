@@ -2,6 +2,9 @@ import { Notification } from '@application/entities/notification';
 import { NotificationsRepository } from '@application/repositories/notifications-repository';
 
 export class InMemoryNotificationRepository implements NotificationsRepository {
+  countManyByRecipientId(notification: any): Promise<number> {
+    throw new Error('Method not implemented.');
+  }
   public notifications: Notification[] = [];
 
   async findById(notificationId: string): Promise<Notification | null> {
