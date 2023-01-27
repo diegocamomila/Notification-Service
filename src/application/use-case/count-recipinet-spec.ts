@@ -1,40 +1,27 @@
-import { Content } from '../entities/content';
-import { Notification } from '../entities/notification';
-import { InMemoryNotificationRepository } from '../../../test/repositories/in-memory-notifications-repository';
-import { CountRecipientNotifications } from './count-recipient-notifications';
+import { makeNotification } from 'src/test/factories/notification-factory';
+import { InMemoryNotificationsRepository } from 'src/test/repositories/in-memory-notifications-repository';
+import { CountRecipientNotification } from './count-recipient-notifications';
 
-describe('Count recioients notifications', () => {
-  it('shoud be able to count recipient notifications', async () => {
-    const notificationsRepository = new InMemoryNotificationRepository();
-    const countRecipientNotifications = new CountRecipientNotifications(
+describe('Count recipient notifications', () => {
+  it('should be able to count recipient notifications', async () => {
+    const notificationsRepository = new InMemoryNotificationsRepository();
+    const countRecipientNotification = new CountRecipientNotification(
       notificationsRepository,
     );
 
     await notificationsRepository.create(
-      new Notification({
-        category: 'social',
-        content: new Content('Nova solicitação de Amizade!'),
-        recipientId: 'recipient-1',
-      }),
+      makeNotification({ recipientId: 'recipient-1' }),
     );
 
     await notificationsRepository.create(
-      new Notification({
-        category: 'social',
-        content: new Content('Nova solicitação de Amizade!'),
-        recipientId: 'recipient-1',
-      }),
+      makeNotification({ recipientId: 'recipient-1' }),
     );
 
     await notificationsRepository.create(
-      new Notification({
-        category: 'social',
-        content: new Content('Nova solicitação de Amizade!'),
-        recipientId: 'recipient-2',
-      }),
+      makeNotification({ recipientId: 'recipient-2' }),
     );
 
-    const { count } = await countRecipientNotifications.execute({
+    const { count } = await countRecipientNotification.execute({
       recipientId: 'recipient-1',
     });
 

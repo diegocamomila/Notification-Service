@@ -1,39 +1,33 @@
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import { Replace } from 'src/helpers/Replace';
 import { Content } from './content';
 
 export interface NotificationProps {
-  recipientId: string;
   content: Content;
   category: string;
   readAt?: Date | null;
-  canceledAt?: Date | null;
   createdAt: Date;
+  canceledAt?: Date | null;
+  recipientId: string;
 }
 
 export class Notification {
   private _id: string;
   private props: NotificationProps;
 
-  constructor(props: Replace<NotificationProps, { createdAt?: Date }>) {
-    const test = this.createdAt ?? new Date();
-    this._id = randomUUID();
+  constructor(
+    props: Replace<NotificationProps, { createdAt?: Date }>,
+    id?: string,
+  ) {
+    this._id = id ?? randomUUID();
     this.props = {
       ...props,
-      createdAt: test,
+      createdAt: props.createdAt ?? new Date(),
     };
   }
 
-  public get id() {
+  public get id(): string {
     return this._id;
-  }
-
-  public set recipientId(recipientId: string) {
-    this.props.recipientId = recipientId;
-  }
-
-  public get recipientId(): string {
-    return this.props.recipientId;
   }
 
   public set content(content: Content) {
@@ -52,16 +46,20 @@ export class Notification {
     return this.props.category;
   }
 
-  public set readAt(readAt: Date | null | undefined) {
-    this.props.readAt = readAt;
+  public read() {
+    this.props.readAt = new Date();
   }
 
-  // public read() {
-  //   this.props.readAt = new Date();
-  // }
+  public unread() {
+    this.props.readAt = null;
+  }
 
   public get readAt(): Date | null | undefined {
     return this.props.readAt;
+  }
+
+  public get createdAt(): Date {
+    return this.props.createdAt;
   }
 
   public cancel() {
@@ -72,7 +70,11 @@ export class Notification {
     return this.props.canceledAt;
   }
 
-  public get createdAt(): Date {
-    return this.props.createdAt;
+  public set recipientId(recipientId: string) {
+    this.props.recipientId = recipientId;
+  }
+
+  public get recipientId(): string {
+    return this.props.recipientId;
   }
 }
